@@ -620,12 +620,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= AUTH MODAL =================
   function updateProfileUI() {
-  if (loggedInUser) {
-    profileIcon.textContent = `👋 Hi, ${loggedInUser.username}`;
-  } else {
-    profileIcon.textContent = '👤 Login';
+    if (loggedInUser) {
+      profileIcon.textContent = `👋 Hi, ${loggedInUser.username}`;
+    } else {
+      profileIcon.textContent = '👤 Login';
+    }
   }
-}
 
   function showAuthModal(loginMode) {
     isLogin = loginMode;
@@ -646,7 +646,13 @@ document.addEventListener('DOMContentLoaded', () => {
       toggleAuthText.textContent = 'Already have an account?';
       toggleAuth.textContent = 'Log In';
     }
+    authModal.style.display = 'flex';
     authModal.classList.add('show');
+  }
+
+  function closeAuthModal() {
+    authModal.style.display = 'none';
+    authModal.classList.remove('show');
   }
 
   toggleAuth?.addEventListener('click', e => {
@@ -670,120 +676,130 @@ document.addEventListener('DOMContentLoaded', () => {
     showAuthModal(false);
   });
 
-  authForm?.addEventListener('submit', e => {
-    e.preventDefault();
+ // Close modal 
+window.addEventListener('click', (e) => {
+  if (e.target === authModal) {
+    closeAuthModal();
+  }
+});
 
-    if (isLogin) {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
+authForm?.addEventListener('submit', e => {
+  e.preventDefault();
+  console.log('Submit form, isLogin:', isLogin);
 
-      if (!username || !password) {
-        alert('Please fill all required fields');
-        return;
-      }
-
-      const user = users.find(u => u.username === username && u.password === password);
-      if (!user) {
-        alert('Invalid username or password');
-        return;
-      }
-
-      loggedInUser = user;
-      saveLoggedInUser();
-      alert(`Welcome back, ${user.username}!`);
-      authModal.classList.remove('show');
-      authForm.reset();
-      updateProfileUI();
-    } else {
-      const regUsername = document.getElementById('regUsername').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const regPassword = document.getElementById('regPassword').value.trim();
-      const confirmPassword = document.getElementById('confirmPassword').value.trim();
-      const agreeTerms = document.getElementById('agreeTerms').checked;
-
-      if (!regUsername || !email || !regPassword || !confirmPassword) {
-        alert('Please fill all required fields');
-        return;
-      }
-
-      if (regPassword !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-      }
-
-      if (!agreeTerms) {
-        alert('Please agree to the Terms of Service');
-        return;
-      }
-
-      if (users.find(u => u.username === regUsername)) {
-        alert('Username already taken');
-        return;
-      }
-
-      const newUser = { username: regUsername, email, password: regPassword };
-      users.push(newUser);
-      saveUsers();
-
-      loggedInUser = newUser;
-      saveLoggedInUser();
-      updateProfileUI();
-      alert(`Welcome, ${regUsername}!`);
-      authModal.classList.remove('show');
-      authForm.reset();
+  if (isLogin) {
+    // Login flow
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    console.log('Logging in with:', username, password);
+    
+    if (!username || !password) {
+      alert('Please fill all required fields');
+      return;
     }
-  });
 
-  togglePassword?.addEventListener('click', () => {
-    const passwordInput = document.getElementById('password');
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) {
+      alert('Invalid username or password');
+      return;
+    }
+
+    loggedInUser = user;
+    saveLoggedInUser();
+    updateProfileUI();
+    alert(`Welcome back, ${user.username}!`);
+    closeAuthModal();
+    authForm.reset();
+
+  } else {
+    // Register flow
+    const regUsername = document.getElementById('regUsername').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const regPassword = document.getElementById('regPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+
+    if (!regUsername || !email || !regPassword || !confirmPassword) {
+      alert('Please fill all required fields');
+      return;
+    }
+
+    if (regPassword !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    if (!agreeTerms) {
+      alert('Please agree to the Terms of Service');
+      return;
+    }
+
+    if (users.find(u => u.username === regUsername)) {
+      alert('Username already taken');
+      return;
+    }
+
+    const newUser = { username: regUsername, email, password: regPassword };
+    users.push(newUser);
+    saveUsers();
+
+    loggedInUser = newUser;
+    saveLoggedInUser();
+    updateProfileUI();
+    alert(`Welcome, ${regUsername}!`);
+    closeAuthModal();
+    authForm.reset();
+  }
+});
+
+// Toggle password visibility helpers
+togglePassword?.addEventListener('click', () => {
+  const passwordInput = document.getElementById('password');
+  if (passwordInput) {
     passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-  });
+  }
+});
 
-  toggleRegPassword?.addEventListener('click', () => {
-    const regPasswordInput = document.getElementById('regPassword');
+toggleRegPassword?.addEventListener('click', () => {
+  const regPasswordInput = document.getElementById('regPassword');
+  if (regPasswordInput) {
     regPasswordInput.type = regPasswordInput.type === 'password' ? 'text' : 'password';
-  });
+  }
+});
 
-  toggleConfirmPassword?.addEventListener('click', () => {
-    const confirmPasswordInput = document.getElementById('confirmPassword');
+toggleConfirmPassword?.addEventListener('click', () => {
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  if (confirmPasswordInput) {
     confirmPasswordInput.type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
-  });
+  }
+});
 
-  forgotPasswordLink?.addEventListener('click', e => {
-    e.preventDefault();
-    alert('Password reset coming soon! Contact support@smartbudget.com');
-  });
+forgotPasswordLink?.addEventListener('click', e => {
+  e.preventDefault();
+  alert('Password reset coming soon! Contact support@smartbudget.com');
+});
 
-  // ================= FAQ ACCORDION =================
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    question?.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-      faqItems.forEach(faq => faq.classList.remove('active'));
-      if (!isActive) item.classList.add('active');
-    });
-  });
   
   // Subscribe message handling
-const subscribeBtn = document.querySelector('.footer-newsletter button');
-const emailInput = document.querySelector('.footer-newsletter input[type="email"]');
-const messageDiv = document.getElementById('subscribeMessage'); // Make sure you add this div in HTML
+  const subscribeBtn = document.querySelector('.footer-newsletter button');
+  const emailInput = document.querySelector('.footer-newsletter input[type="email"]');
+  const messageDiv = document.getElementById('subscribeMessage');
 
-if (subscribeBtn && emailInput && messageDiv) {
-  subscribeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (emailInput.value.trim() === '') {
-      messageDiv.style.color = 'red';
-      messageDiv.textContent = 'Please enter a valid email.';
-      messageDiv.style.display = 'block';
-    } else {
-      messageDiv.style.color = 'green';
-      messageDiv.textContent = 'Thanks for subscribing!';
-      messageDiv.style.display = 'block';
-      emailInput.value = '';
-    }
-  });
-}
+  if (subscribeBtn && emailInput && messageDiv) {
+    subscribeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (emailInput.value.trim() === '') {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Please enter a valid email.';
+        messageDiv.style.display = 'block';
+      } else {
+        messageDiv.style.color = 'green';
+        messageDiv.textContent = 'Thanks for subscribing!';
+        messageDiv.style.display = 'block';
+        emailInput.value = '';
+      }
+    });
+  }
 
   // ================= RENDER ALL =================
   function renderAll() {
