@@ -170,7 +170,7 @@ nav input[type="search"] {
 
 /* ===== MAIN CONTENT ===== */
 main {
-  margin-left: 250px;
+  margin-left: 230px;
   margin-top: 60px;
   padding: 20px;
   min-height: calc(100vh - 60px);
@@ -842,7 +842,7 @@ footer {
   }
 }
 
-/* Review Popup */
+
 /* ===== CUTE REVIEW POPUP ===== */
 .review-popup {
   display: none;
@@ -866,7 +866,7 @@ footer {
   animation: popCute 0.4s ease;
 }
 
-/* small pop animation */
+
 @keyframes popCute {
   0% { transform: scale(0.85); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
@@ -879,7 +879,7 @@ footer {
   text-align: center;
 }
 
-/* close button */
+
 .close-popup {
   position: absolute;
   top: 12px;
@@ -1054,7 +1054,7 @@ footer {
 .email-link:hover {
   text-decoration: underline;
 }
-/*#e1e6d1;*/
+
 /* ===== TIPS & RESOURCES ===== */
 .tips-resources {
   background: #f4f6e7;
@@ -1113,8 +1113,8 @@ footer {
   position: relative;
   width: 100vw;
   height: 500px;
-  margin-left: -250px; /* Offset sidebar width */
-  margin-top: -20px; /* Offset main padding */
+  margin-left: -250px; 
+  margin-top: -20px; 
   background-image: url('image/financeguy.jpg');
   background-size: cover;
   background-position: center;
@@ -1154,7 +1154,7 @@ footer {
   color: white;
   text-align: center;
   padding: 20px;
-  z-index: 2; /* ensure above overlay */
+  z-index: 2; 
 }
 
 .about-overlay h1 {
@@ -1171,13 +1171,12 @@ footer {
 .about-features {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap; /* allow cards to wrap on small screens */
-  justify-content: center; /* center cards horizontally */
+  flex-wrap: wrap; 
+  justify-content: center; 
   margin-top: 30px;
 }
 
 /* FINANCIAL INSIGHTS CARD */
-/* Removed conflicting rules and consolidated */
 .financial-insights-card {
   background: #f4f6e7;
   padding: 25px 30px;
@@ -1211,7 +1210,7 @@ footer {
 
 /* FEATURE CARD */
 .feature-card {
-  flex: 1 1 280px; /* grow but min width 280px */
+  flex: 1 1 280px; 
   max-width: 320px;
   background: #f4f6e7;
   border-radius: var(--radius-md);
@@ -1254,7 +1253,7 @@ footer {
   }
 
   .about-overlay h1 {
-    font-size: 28px; /* slightly smaller on mobile */
+    font-size: 28px; 
   }
 
   .about-overlay p {
@@ -1273,18 +1272,16 @@ footer {
 
 .site-footer {
   background: var(--bg-card);
-  width: 100%;
   padding: 30px 0;
-  box-sizing: border-box;
   text-align: center;
-  
+  margin-left: 230px;
 }
 
+
 .site-footer > div {
-  max-width: 900px;
+  max-width: 900px; 
   margin: 0 auto;
   padding: 0 20px;
-  box-sizing: border-box;
 }
 
 
@@ -1360,3 +1357,33 @@ footer {
 .footer-bottom {
   text-align: center;
 }
+.video-card iframe {
+  width: 100%;
+  height: 140px; 
+  border-radius: 12px;
+  border: none;
+}
+
+.preview-note {
+  font-size: 13px;
+  color: #555;
+  margin-top: 8px;
+}
+
+.watch-full-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.watch-full-link:hover {
+  text-decoration: underline;
+}
+.video-thumb {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
